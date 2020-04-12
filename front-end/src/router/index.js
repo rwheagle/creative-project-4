@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Account from '../views/Account.vue'
 import Other from '../views/Other.vue'
 import About from '../views/About.vue'
+import User from '../views/User.vue'
 
 Vue.use(VueRouter)
 
@@ -27,7 +28,12 @@ const routes = [
     path: '/about',
     name: 'About',
     component: About
-  }
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: User
+  },
 ]
 
 const router = new VueRouter({

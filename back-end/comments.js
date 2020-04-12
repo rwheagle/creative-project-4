@@ -1,107 +1,95 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const express = require("express");
+const router = express.Router();
 
-const app = express();
+const users = require("./users.js");
+const User = users.model;
+const validUser = users.valid;
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+const commentSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
+  },
+  year: String,
+  text: String,
+  created: {
+    type: Date,
+    default: Date.now
+  },
+});
 
-// parse application/json
-app.use(bodyParser.json());
-
-let comments = [
-  {
-    id: 0,
-    year:"1832",
-    comments: []
-  },
-  {
-    id: 0,
-    year:"1835",
-    comments: []
-  },
-  {
-    id: 0,
-    year:"1838",
-    comments: []
-  },
-  {
-    id: 0,
-    year:"1842",
-    comments: []
-  },
-  {
-    id: 0,
-    year:"other",
-    comments: []
+const Comment = mongoose.model('Comment', commentSchema);
+//get comments
+router.get("/:year", async (req, res) => {
+  try {
+    let comments = await Comment.find({
+      year: req.params.year
+    }).sort({
+      created: -1
+    }).populate('user');
+    return res.send(comments);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
   }
-];
+});
 
-app.post('/api/comments/:year', (req, res) => {
-  let index = comments.map(comment => {
-      return comment.year;
-    })
-    .indexOf(req.params.year);
-  comments[index].id = comments[index].id + 1;
-  let comment = {
-    id: comments[index].id,
+// upload comment
+router.post("/:year", validUser, async (req, res) => {
+  const comment = new Comment({
+    user: req.user,
+    year: req.params.year,
     text: req.body.text,
-    name: req.body.name,
-    date: req.body.date
-  };
-  comments[index].comments.push(comment);
-  res.send(comment);
-});
-
-app.get('/api/comments/:year', (req, res) => {
-  let index = comments.map(comment => {
-      return comment.year;
-    })
-    .indexOf(req.params.year);
-  res.send(comments[index].comments);
-});
-
-app.put('/api/comments/:year/:id', (req, res) => {
-  let index = comments.map(comment => {
-      return comment.year;
-    })
-    .indexOf(req.params.year);
-  let id = parseInt(req.params.id);
-  let commentsMap = comments[index].comments.map(comment => {
-    return comment.id;
   });
-  let ind = commentsMap.indexOf(id);
-  if (ind === -1) {
-    res.status(404)
-      .send("Sorry, that comment doesn't exist");
-    return;
+  try {
+    await comment.save();
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
   }
-  let comment = comments[index].comments[ind];
-  comment.text = req.body.text;
-  comment.name = req.body.name;
-  comment.date = req.body.date;
-  res.send(comment);
 });
 
-app.delete('/api/comments/:year/:id', (req, res) => {
-  let index = comments.map(comment => {
-      return comment.year;
-    })
-    .indexOf(req.params.year);
-  let id = parseInt(req.params.id);
-  let removeIndex = comments[index].comments.map(comment => {
-      return comment.id;
-    })
-    .indexOf(id);
-  if (removeIndex === -1) {
-    res.status(404)
-      .send("Sorry, that comment doesn't exist");
-    return;
+//update comment
+router.delete("/:year/:id", validUser, async (req, res) =>{
+  // can only do this if an administrator
+  if (req.user.role !== "admin") {
+    return res.sendStatus(403);
   }
-  comments[index].comments.splice(removeIndex, 1);
-  res.sendStatus(200);
+  try {
+    await Comment.deleteOne({
+        _id: req.params.id
+      });
+      res.sendStatus(200);
+    }
+    catch(error){
+      console.log(error);
+      return res.sendStatus(500);
+    }
+});
+//update comment
+router.put("/:year/:id", validUser, async (req, res) =>{
+  // can only do this if an administrator
+  if (req.user.role !== "admin") {
+    return res.sendStatus(403);
+  }
+  try {
+    comment = await Comment.findOne({
+      _id: req.params.id
+    });
+    comment.text = req.body.text;
+    await comment.save();
+    return res.send({
+      comment: comment
+    });
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
 });
 
-app.listen(3000, () => console.log('Server listening on port 3000!'));
+module.exports = {
+  model: Comment,
+  routes: router,
+}

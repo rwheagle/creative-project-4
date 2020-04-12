@@ -8,7 +8,8 @@ Vue.config.productionTip = false
 
 let data = {
   account:accounts,
-  other:otherAccounts
+  other:otherAccounts,
+  user:null
 };
 
 new Vue({

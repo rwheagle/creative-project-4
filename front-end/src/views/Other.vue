@@ -18,11 +18,13 @@
           <p>{{comment.comment}}</p>
         </div>
       </div>
+      <div class="comments">
+        <CommentsView :year="other.name" />
+      </div>
     </div>
+
   </div>
-  <div class="comments">
-    <CommentsView :year='"other"' />
-  </div>
+
 </div>
 </template>
 <script>

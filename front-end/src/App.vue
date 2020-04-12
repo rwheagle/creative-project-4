@@ -9,6 +9,8 @@
       <router-link to="/account/1842">1842 Account</router-link>
       <router-link to="/other">Other Accounts</router-link>
       <router-link to="/about">About</router-link>
+      <router-link to="/User" v-if="this.$root.$data.user==null">Login</router-link>
+      <router-link to="/User" v-else>My Account</router-link>
     </div>
     <router-view/>
     </div>
@@ -16,8 +18,7 @@
       <a href="https://github.com/rwheagle/first-vision">GitHub Link</a>
     </div>
   </div>
-  </template>
-
+</template>
   <style>
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -25,7 +26,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-  
+
   }
 
   #nav {
