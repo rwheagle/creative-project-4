@@ -15,7 +15,7 @@
     <router-view/>
     </div>
     <div class=footer>
-      <a href="https://github.com/rwheagle/first-vision">GitHub Link</a>
+      <a href="https://github.com/rwheagle/creative-project-4">GitHub Link</a>
     </div>
   </div>
 </template>
@@ -32,12 +32,15 @@
   #nav {
     padding: 30px;
     text-align:center;
+    background-color: #b0c4de;
   }
 
   #nav a {
     font-weight: bold;
-    color: #2c3e50;
     margin: 2%;
+    color: white;
+    text-decoration: none;
+    font-style: italic;
   }
 
   #nav a.router-link-exact-active {
@@ -47,7 +50,7 @@
   margin-bottom: 5%;
 }
   .footer {
-    background-color: #FFF;
+    background-color: #b0c4de;
     position: fixed;
     height: 5%;
     left: 0;

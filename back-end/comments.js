@@ -52,28 +52,20 @@ router.post("/:year", validUser, async (req, res) => {
 });
 
 //update comment
-router.delete("/:year/:id", validUser, async (req, res) =>{
-  // can only do this if an administrator
-  if (req.user.role !== "admin") {
-    return res.sendStatus(403);
-  }
+router.delete("/:year/:id", validUser, async (req, res) => {
   try {
-    await Comment.deleteOne({
+      await Comment.deleteOne({
         _id: req.params.id
       });
       res.sendStatus(200);
-    }
-    catch(error){
-      console.log(error);
-      return res.sendStatus(500);
-    }
+    
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
 });
 //update comment
-router.put("/:year/:id", validUser, async (req, res) =>{
-  // can only do this if an administrator
-  if (req.user.role !== "admin") {
-    return res.sendStatus(403);
-  }
+router.put("/:year/:id", validUser, async (req, res) => {
   try {
     comment = await Comment.findOne({
       _id: req.params.id

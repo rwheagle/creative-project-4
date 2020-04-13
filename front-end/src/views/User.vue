@@ -1,5 +1,6 @@
 <template>
 <div class="dashboard">
+  <h1>Welcome to First Vision Accounts</h1>
   <MyUser v-if="user" />
   <Login v-else />
 </div>

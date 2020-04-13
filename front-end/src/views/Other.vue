@@ -43,19 +43,26 @@ export default {
 </script>
 <style scoped>
 .account p {
-  margin-left: 10%;
-  margin-right: 10%;
-  background-color: #fff5f5;
+  margin-left: 15%;
+  margin-right: 15%;
+  padding: 2%;
+  background-color: #deeff5;
+  border : 1px black solid;
 }
 
 .historical p {
   margin-left: 15%;
   margin-right: 15%;
-  background-color: #fff5f5;
+  padding: 2%;
+  border : 1px black solid;
+  background-color: #b5dce9;
 }
 .commentary p {
   margin-left: 15%;
   margin-right: 15%;
-  background-color: #fff5f5;
+  padding: 2%;
+  border : 1px black solid;
+  background-color: #b5dce9;
 }
+
 </style>

@@ -14,9 +14,26 @@
 
 <style scoped>
 .home {
-text-align: center;
+  text-align: center;
 }
+
+.links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: #b5dce9;
+  width: 80%;
+  margin: auto;
+  padding: 1%;
+  border: 2px black solid;
+}
+
 .links a {
-margin:2%;
+  margin: 2%;
+  color: black;
+  font-size: 1.5em;
+  text-decoration: none;
+  font-style: italic;
+    font-weight: bold;
 }
 </style>

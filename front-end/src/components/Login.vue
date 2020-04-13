@@ -95,7 +95,7 @@ h1 {
 }
 
 .hero {
-  padding: 120px;
+  padding: 10px;
   display: flex;
   justify-content: center;
 }
